@@ -11,12 +11,18 @@ class CategoryController extends Controller
 
     public function index()
     {
-        //
+        $data = array(
+            'categories' => Category::orderBy('id', 'desc')->get()
+        );
+        return view('admin.category.index', $data);
     }
 
     public function create()
     {
-        //
+        $data = array(
+            'category' =>  Category::orderBy('name', 'asc')->get()
+        );
+        return view('admin.category.create', $data);
     }
 
     public function store(Request $request)
