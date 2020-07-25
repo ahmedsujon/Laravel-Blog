@@ -78,7 +78,7 @@
       </div>
       <ul class="app-menu">
         <li><a class="app-menu__item active" href="{{ route('home') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Category</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-tags"></i><span class="app-menu__label">Category</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
             <li><a class="treeview-item" href="{{ route('category.create') }}"><i class="icon fa fa-circle-o"></i> New Category</a></li>
             <li><a class="treeview-item" href="{{ route('category.index') }}"><i class="icon fa fa-circle-o"></i> All Category</a></li>
@@ -128,6 +128,7 @@
     <script type="text/javascript" src="{{ asset('admin/js/plugins/chart.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('admin/js/plugins/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('admin/js/plugins/bootstrap-notify.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('admin/js/plugins/dataTables.bootstrap.min.js') }}"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>
     <!-- Google analytics script-->
@@ -141,7 +142,32 @@
       	ga('send', 'pageview');
       }
     </script>
-
+    <script>
+        $(document).ready(function() {
+            $("#DataTable").DataTable();
+        });
+    </script>
+      @if(Session::has('response'))
+      <script>
+          var toastData = {
+              html: '{{Session::get("response.message")}}',
+              classes:
+                  '{{Session::get("response.type") == "success" ? "green" : "red"}}'
+          };
+          $.notify(
+              {
+                  title: "",
+                  message: '{{Session::get("response.message")}}',
+                  icon:
+                      '{{Session::get("response.type") == "success" ? "fa fa-check" : "fa fa-close"}}'
+              },
+              {
+                  type:
+                      '{{Session::get("response.type") == "success" ? "success" : "danger"}}'
+              }
+          );
+      </script>
+      @endif
     <script type="text/javascript">
       var data = {
       	labels: ["January", "February", "March", "April", "May"],

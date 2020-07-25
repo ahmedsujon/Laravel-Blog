@@ -21,23 +21,34 @@
             <table class="table table-hover table-bordered" id="sampleTable">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
+                  <th>Description</th>
+                  <th>Created At</th>
+                  <th>Updated At</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
+                @foreach ($categories as $category)
                 <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>$320,800</td>
+                  <td>{{ $category->id }}</td>
+                  <td>{{ $category->name }}</td>
+                  <td>{{ $category->description }}</td>
+                  <td>{{ $category->created_at }}</td>
+                  <td>{{ $category->updated_at }}</td>
+                  <td>
+                    <a href="{{ route('category.edit', $category->id) }}" class="btn btn-primary btn-sm mr-3">Edit</a>
+                    <form action="{{ route('category.destroy', $category->id) }}" method="POST"
+                        style="display: inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm mr-3"
+                            onclick="return(confirm('are you sure to delete?'))">Delete</button>
+                    </form>
+                </td>
                 </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
