@@ -10,6 +10,7 @@ Route::get('/', function () {
 
 Route::prefix('/')->namespace('Web\Admin')->group(function () {
     Route::resource('category', 'CategoryController');
+    Route::resource('tag', 'TagController');
 
 });
 

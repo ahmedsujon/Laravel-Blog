@@ -40,11 +40,6 @@ class CategoryController extends Controller
         return redirect()->route('category.index');
     }
 
-    public function show(Category $category)
-    {
-        //
-    }
-
     public function edit(Category $category)
     {
         $data = array(
@@ -57,7 +52,7 @@ class CategoryController extends Controller
     {
         $categoryData = $this->validateRequest();
         $categoryData['slug'] = $this->createSlug($this->checkSlug($request->name));
-        
+
         if ($category->update($categoryData)) {
             Session::flash('response', array('type' => 'success', 'message' => 'Category Updated successfully!'));
         } else {
