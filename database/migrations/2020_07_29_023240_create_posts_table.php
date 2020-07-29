@@ -21,7 +21,7 @@ class CreatePostsTable extends Migration
             $table->longText('description');
             $table->integer('category_id');
             $table->integer('user_id');
-            $table->timestamps('published_at');
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
     }
