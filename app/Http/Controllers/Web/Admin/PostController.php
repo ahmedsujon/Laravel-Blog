@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Carbon\Carbon;
-use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Support\Str;
 use Session;
 use Image;
@@ -38,9 +37,8 @@ class PostController extends Controller
 
         $postData = $this->validateRequest();
         $postData['slug'] = $this->createSlug($this->checkSlug($request->title));
-        $postData = $this->validateRequest();
         $postData['user_id'] = auth()->user()->id;
-        $postData['published'] = Carbon::now();
+        $postData['published_at'] = Carbon::now();
         if ($request->hasFile('image')) {
             $postData['image'] = $this->uploadImage($request->file('image'));
         }
@@ -49,7 +47,7 @@ class PostController extends Controller
         } else {
             Session::flash('response', array('type' => 'error', 'message' => 'Something Went wrong!'));
         }
-        return redirect()->route('admin.post.index');
+        return redirect()->route('post.index');
 
     }
 
@@ -60,17 +58,39 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        //
+        $data = array(
+            'post' => $post,
+            'categories' =>  Category::orderBy('name', 'asc')->get()
+        );
+        return view('admin.post.edit', $data);
     }
 
     public function update(Request $request, Post $post)
     {
-        //
+
+        $postData = $this->validateRequest();
+        $postData['slug'] = $this->createSlug($this->checkSlug($request->title));
+
+        if ($request->hasFile('image')) {
+            $postData['image'] = $this->uploadImage($request->file('image'));
+        }
+
+        if ($post->update($postData)) {
+            Session::flash('response', array('type' => 'success', 'message' => 'Post Updated successfully!'));
+        } else {
+            Session::flash('response', array('type' => 'error', 'message' => 'Something Went wrong!'));
+        }
+        return redirect()->route('post.index');
     }
 
     public function destroy(Post $post)
     {
-        //
+        if ($post->delete()) {
+            Session::flash('response', array('type' => 'success', 'message' => 'Post deleted successfully!'));
+        } else {
+            Session::flash('response', array('type' => 'error', 'message' => 'Something Went wrong!'));
+        }
+        return redirect('post');
     }
 
     private function validateRequest()

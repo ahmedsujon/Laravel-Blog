@@ -30,14 +30,13 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($posts as $post)
+                @foreach ($posts as $index => $post)
                 <tr>
-                  <td>{{ $post->id }}</td>
-                  <td><img style="height:37px; border-radius:20px;" src="{{$post->image}}"></td>
+                  <td>{{ $index }}</td>
+                  <td><img style="height:37px; border-radius:20px;" src="{{asset('storage/uploads/PostImage/' . $post->image)}}"></td>
                   <td>{{ $post->title }}</td>
                   <td>{{ $post->category_id }}</td>
-                  <td>{{ $post->user_id }}</td>
-                  <td>{{ $post->updated_at }}</td>
+                  <td>{{ $post->user->name }}</td>
                   <td>
                     <a href="{{ route('post.edit', $post->id) }}" class="btn btn-primary btn-sm mr-3">Edit</a>
                     <form action="{{ route('post.destroy', $post->id) }}" method="POST"
