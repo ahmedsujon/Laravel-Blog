@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Session;
@@ -17,7 +18,7 @@ class PostController extends Controller
     {
         $data = array(
 
-            'posts' => Post::with(['categories'])->orderBy('id', 'desc')->get()
+            'posts' => Post::with(['categories', 'tags'])->orderBy('id', 'desc')->get()
 
         );
         return view('admin.post.index', $data);
@@ -27,6 +28,7 @@ class PostController extends Controller
     {
         $data = array(
             'categories' => Category::all(),
+            'tags' => Tag::all(),
             'post' => new Post(),
         );
         return view('admin.post.create', $data);
@@ -34,11 +36,15 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
 
         $postData = $this->validateRequest();
         $postData['slug'] = $this->createSlug($this->checkSlug($request->title));
         $postData['user_id'] = auth()->user()->id;
         $postData['published_at'] = Carbon::now();
+        // $postData['tags'] = attach()->tags();
+        // $postData->tags()->attach($request->tags);
+
         if ($request->hasFile('image')) {
             $postData['image'] = $this->uploadImage($request->file('image'));
         }

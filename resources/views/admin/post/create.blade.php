@@ -44,6 +44,17 @@
                 <label for="image">Upload Image</label>
                 <input class="form-control-file" id="image" name="image" type="file" aria-describedby="fileHelp"><small class="form-text text-muted" id="fileHelp">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
             </div>
+
+
+            <div class="form-group col-md-12">
+            <label for="tag">Select Tags</label>
+            @foreach($tags as $tag)
+                <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="tags[]" id="tag{{ $tag->id }}" value="{{ $tag->id }}">
+                <label for="tag{{ $tag->id }}" class="custom-control-label">{{ $tag->name }}</label>
+                </div>
+            @endforeach
+            </div>
             <div class="form-group col-md-12">
                 <label for="description">Example textarea</label>
                 <textarea class="form-control" id="description" name="description" rows="3"></textarea>

@@ -20,6 +20,12 @@ class CreateTagsTable extends Migration
             $table->string('description')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('post_tag', function (Blueprint $table) {
+            $table->id();
+            $table->integer('post_id');
+            $table->integer('tag_id');
+        });
     }
 
     /**
